@@ -1,0 +1,462 @@
+.catalog-page {
+  max-width: 1340px;
+  min-height: calc(100vh - 83px);
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 70px) clamp(20px, 5vw, 68px);
+}
+
+.page-heading {
+  max-width: 760px;
+  margin-bottom: 32px;
+}
+
+.page-heading h1 {
+  margin: 4px 0 7px;
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.12;
+}
+
+.page-heading > p:last-child {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.catalog-controls {
+  display: grid;
+  grid-template-columns: minmax(240px, 2fr) minmax(180px, 1fr);
+  gap: 16px;
+  max-width: 800px;
+  margin: 25px 0 12px;
+}
+
+.catalog-search,
+.catalog-category {
+  display: grid;
+  gap: 6px;
+  color: var(--ink-soft);
+  font: 11px var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.catalog-search input,
+.catalog-category select,
+.editor-form input,
+.editor-form select {
+  width: 100%;
+  min-height: 45px;
+  padding: 10px 13px;
+  border: 1px solid rgba(120, 80, 42, 0.55);
+  border-radius: 6px;
+  background: rgba(255, 247, 232, 0.78);
+  color: var(--ink);
+  font: 15px var(--sans);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.catalog-search input::placeholder {
+  color: #96795d;
+}
+
+.result-count {
+  margin: 22px 0 12px;
+  color: var(--ink-soft);
+  font: 11px var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.garment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 295px), 1fr));
+  gap: 18px;
+}
+
+.garment-card {
+  overflow: hidden;
+  border: 1px solid rgba(120, 80, 42, 0.44);
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.65);
+  box-shadow: 0 5px 16px rgba(76, 48, 23, 0.06);
+}
+
+.garment-card-art {
+  min-height: 142px;
+  padding: 16px 19px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(120, 80, 42, 0.36);
+  background:
+    radial-gradient(ellipse at 50% 70%, rgba(255, 246, 226, 0.92), transparent 62%),
+    repeating-linear-gradient(45deg, rgba(116, 77, 41, 0.035) 0, rgba(116, 77, 41, 0.035) 1px, transparent 1px, transparent 7px);
+  color: var(--ink-soft);
+  font: 10px var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.garment-card-art strong {
+  align-self: center;
+  margin: 0 auto;
+  color: rgba(104, 67, 35, 0.58);
+  font: italic 54px 'Playfair Display', Georgia, serif;
+  letter-spacing: 0.05em;
+}
+
+.garment-card-copy {
+  padding: 17px 19px 19px;
+}
+
+.garment-card-copy .section-kicker i,
+.design-card .section-kicker i,
+.page-heading .section-kicker i {
+  font-style: normal;
+  padding: 0 3px;
+}
+
+.garment-card-copy h2,
+.design-card h2,
+.component-editor h2,
+.collection-empty h2 {
+  margin: 4px 0 7px;
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.garment-card-copy > p:not(.section-kicker) {
+  min-height: 50px;
+  margin: 0 0 17px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #704322;
+  font-size: 14px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(112, 67, 34, 0.5);
+  padding-bottom: 3px;
+}
+
+.text-link:hover {
+  color: #472b16;
+  border-color: #472b16;
+}
+
+.text-link span {
+  font-family: var(--sans);
+}
+
+.page-message {
+  margin: 22px 0;
+  color: var(--ink-soft);
+  font: 14px var(--sans);
+}
+
+.error-message {
+  color: #8a3025;
+  font: 13px var(--sans);
+  line-height: 1.5;
+}
+
+.empty-state {
+  padding: 27px;
+  border: 1px dashed rgba(120, 80, 42, 0.55);
+  border-radius: 8px;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.collection-empty {
+  max-width: 650px;
+  margin: 45px auto;
+  background: rgba(250, 240, 222, 0.4);
+}
+
+.collection-empty h2 {
+  margin-top: 0;
+  font-style: italic;
+}
+
+.collection-empty .text-link {
+  margin-top: 10px;
+}
+
+.design-list {
+  display: grid;
+  gap: 14px;
+}
+
+.design-card {
+  padding: 20px 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  border: 1px solid rgba(120, 80, 42, 0.42);
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.64);
+}
+
+.design-card h2 {
+  margin-bottom: 3px;
+}
+
+.design-date {
+  margin: 0;
+  color: var(--ink-soft);
+  font: 11px var(--sans);
+}
+
+.design-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.design-options li {
+  padding: 5px 9px;
+  border: 1px solid rgba(120, 80, 42, 0.32);
+  border-radius: 999px;
+  background: rgba(245, 228, 199, 0.72);
+  color: var(--ink-soft);
+  font: 10px var(--sans);
+}
+
+.design-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 0 0 auto;
+}
+
+.delete-button {
+  padding: 8px 11px;
+  border: 1px solid rgba(138, 48, 37, 0.45);
+  border-radius: 5px;
+  background: transparent;
+  color: #8a3025;
+  font: 12px var(--sans);
+  cursor: pointer;
+}
+
+.delete-button:hover:not(:disabled) {
+  background: rgba(138, 48, 37, 0.08);
+}
+
+.delete-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.measurement-search {
+  max-width: 300px;
+  margin: 20px 0 24px;
+}
+
+.measurement-table-wrap {
+  overflow-x: auto;
+  border: 1px solid rgba(120, 80, 42, 0.45);
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.62);
+}
+
+.measurement-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.measurement-table caption {
+  padding: 16px 18px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  text-align: left;
+}
+
+.measurement-table th,
+.measurement-table td {
+  min-width: 95px;
+  padding: 13px 18px;
+  border-top: 1px solid rgba(120, 80, 42, 0.24);
+  font-size: 14px;
+}
+
+.measurement-table thead th {
+  background: rgba(232, 209, 173, 0.55);
+  color: var(--ink-soft);
+  font: 10px var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.measurement-table tbody th {
+  font-weight: 500;
+}
+
+.measurement-table tbody tr:hover {
+  background: rgba(232, 209, 173, 0.32);
+}
+
+.measurement-table-wrap > .empty-state {
+  margin: 16px;
+}
+
+.editor-page .page-heading {
+  margin-bottom: 26px;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.8fr) minmax(300px, 1.5fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.editor-layout .component-selector {
+  padding: 15px;
+  border: 1px solid rgba(120, 80, 42, 0.48);
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.64);
+}
+
+.editor-layout .component-selector h2 {
+  margin: 0;
+  padding: 0 5px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.editor-layout .component-list {
+  padding-top: 5px;
+}
+
+.editor-layout .component-button {
+  min-height: 50px;
+  font-size: 15px;
+}
+
+.editor-form {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(120, 80, 42, 0.48);
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.64);
+}
+
+.component-editor h2 {
+  margin-top: 1px;
+}
+
+.editor-form .select-label {
+  display: block;
+  margin: 14px 0 6px;
+  color: var(--ink-soft);
+  font: 10px var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.editor-form .size-label {
+  margin-top: 15px;
+}
+
+.editor-form input[type='number'] {
+  max-width: 150px;
+}
+
+.field-note {
+  margin: 7px 0 0;
+  color: var(--ink-soft);
+  font: 11px var(--sans);
+  line-height: 1.5;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  padding-top: 5px;
+}
+
+.form-actions .next-step {
+  min-height: 47px;
+  font-size: 15px;
+  font-style: normal;
+}
+
+.form-actions .next-step:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.save-success-link {
+  grid-column: 1 / -1;
+  justify-self: center;
+  margin-top: -6px;
+  color: #5b442e;
+  font: 11px var(--sans);
+}
+
+@media (max-width: 760px) {
+  .catalog-page {
+    min-height: calc(100vh - 115px);
+    padding: 32px 18px 48px;
+  }
+
+  .catalog-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .design-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 17px;
+    padding: 17px;
+  }
+
+  .design-actions {
+    flex-wrap: wrap;
+  }
+
+  .editor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .measurement-table {
+    min-width: 640px;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-heading h1 {
+    font-size: 37px;
+  }
+
+  .garment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-form {
+    padding: 16px;
+  }
+}

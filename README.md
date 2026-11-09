@@ -1,16 +1,34 @@
-# React + Vite
+# Pattern Lab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React pattern-design app backed by the separate [Pattern Lab API](https://github.com/jamesflamingo/pattern-lab-backend).
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React Router views for the workbench, pattern library, editor, measurements, and saved collection.
+- Pattern search and category filtering.
+- Related pattern components loaded by `garmentId`.
+- Create, read, update, and delete saved designs through the backend API.
+- Responsive layouts and explicit loading/error states.
 
-## React Compiler
+## Local development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Start the backend from its repository by following its README. By default it listens on `http://localhost:3001`.
+2. Copy `.env.example` to `.env` if you need to change the API URL.
+3. Install dependencies and start Vite:
 
-## Expanding the ESLint configuration
+   ```sh
+   npm install
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Set `VITE_API_URL` to the backend origin (without a trailing path) for a deployed frontend. For example, configure the deployed frontend's build environment with `VITE_API_URL=https://your-backend.example.com`.
+
+## Production build
+
+```sh
+npm run build
+```
+
+## Deploy on Render
+
+Create a Static Site Blueprint from this repository and use `render.yaml`. Deploy the backend Blueprint first, then set the frontend service's `VITE_API_URL` to the backend's public origin (for example, `https://pattern-lab-backend.onrender.com`) and deploy the frontend. The rewrite in `render.yaml` sends client-side routes back to `index.html`.
