@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getGarments } from '../services/api'
+import modernDress from '../assets/9401d9ef-082f-464b-b45a-49f69ecabff6.png'
+import classicDress from '../assets/45e9085b-bcaf-4f3a-ae4c-8c28deba562a.png'
 
 const categories = [
   {
@@ -94,11 +96,17 @@ function Dashboard() {
                         className="garment-image-link"
                       >
                         <div className="garment-card-image">
-                          <img
-                            src={`${apiUrl}${garment.image}`}
-                            alt={garment.name}
-                          />
-                        </div>
+  <img
+    src={
+      String(garment.id) === '1'
+        ? classicDress
+        : String(garment.id) === '2'
+          ? modernDress
+          : `${apiUrl}${garment.image}`
+    }
+    alt={garment.name}
+  />
+</div>
                       </Link>
 
                       <div className="garment-card-content">

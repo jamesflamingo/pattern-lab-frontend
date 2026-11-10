@@ -39,20 +39,6 @@ nav a.active {
   text-align: center;
 }
 
-.dashboard .eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  font-size: 11px;
-  color: var(--brown-light);
-  margin-bottom: 24px;
-}
-
-.dashboard p {
-  font-size: 15px;
-  color: var(--brown-light);
-  max-width: 520px;
-  margin: 0 auto;
-}
 
 @media (max-width: 650px) {
   nav {
@@ -66,8 +52,5 @@ nav a.active {
     font-size: 10px;
     letter-spacing: 1px;
   }
-
-  .dashboard {
-    padding: 75px 24px;
   }
-}
+
