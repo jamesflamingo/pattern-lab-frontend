@@ -1,0 +1,99 @@
+/* ========================================
+   PATTERN LAB — PAPER TEXTURE THEME
+   ======================================== */
+
+:root {
+  --paper-bg: #F5EBDD;
+  --paper-light: #EBD9BE;
+  --paper-beige: #D8C1A1;
+  --paper-brown: #927454;
+  --paper-text: #594735;
+  --paper-border: #CBB697;
+  --paper-texture: url("../assets/16c4b398-ffa7-4b33-9bc2-4f2ace29e070.png");
+}
+
+/* NAVBAR */
+
+.navbar {
+  background-color: var(--paper-light);
+
+  background-image:
+    linear-gradient(
+      rgba(245, 232, 210, 0.65),
+      rgba(245, 232, 210, 0.65)
+    ),
+    var(--paper-texture);
+
+  background-size: cover;
+  background-position: center;
+
+  border-bottom: 1px solid var(--paper-border);
+
+  box-shadow: 0 3px 10px rgba(83, 61, 39, 0.08);
+
+  color: var(--paper-text);
+}
+
+/* CARDS */
+
+.card,
+.garment-card-image {
+  background-color: var(--paper-bg);
+
+  background-image:
+    linear-gradient(
+      rgba(248, 238, 218, 0.35),
+      rgba(248, 238, 218, 0.35)
+    ),
+    var(--paper-texture);
+
+  background-size: cover;
+  background-position: center;
+
+  border: 1px solid rgba(145, 112, 78, 0.25);
+  border-radius: 12px;
+
+  box-shadow: 0 4px 12px rgba(83, 61, 39, 0.10);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(83, 61, 39, 0.16);
+}
+
+/* TYPOGRAPHY */
+
+.card h1,
+.card h2,
+.card h3,
+.navbar a,
+.navbar span {
+  color: var(--paper-text);
+}
+
+/* LINKS */
+
+.navbar a {
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar a:hover {
+  color: var(--paper-brown);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .card {
+    border-radius: 10px;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}

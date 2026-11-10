@@ -1,8 +1,3 @@
-
-/* ==============================
-   PATTERN LAB - DASHBOARD
-================================ */
-
 .dashboard {
   width: 100%;
   padding: 40px;
@@ -63,6 +58,11 @@
   padding: 24px;
   box-sizing: border-box;
   background: #f1e6d5;
+  background-image:
+    linear-gradient(rgba(248, 238, 218, 0.35), rgba(248, 238, 218, 0.35)),
+    var(--paper-texture);
+  background-size: cover;
+  background-position: center;
   overflow: hidden;
 }
 
@@ -95,10 +95,6 @@
   color: #a33b32;
 }
 
-/* ==============================
-   RESPONSIVE
-================================ */
-
 @media (max-width: 700px) {
   .dashboard {
     padding: 24px 16px;
@@ -110,5 +106,31 @@
 
   .garment-card-image {
     height: 320px;
+  }
+}
+/* ==============================
+   GARMENT HOVER ANIMATION
+================================ */
+
+.garment-card-image img {
+  transition:
+    transform 0.4s ease,
+    filter 0.4s ease;
+}
+
+.garment-card:hover .garment-card-image img {
+  transform: scale(1.20) translateY(-6px);
+  filter: drop-shadow(0 8px 5px rgba(65, 43, 25, 0.12));
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .garment-card-image img {
+    transition: none;
+  }
+
+  .garment-card:hover .garment-card-image img {
+    transform: scale(1.15);
+    filter: none;
   }
 }

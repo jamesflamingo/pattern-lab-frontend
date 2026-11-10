@@ -1,23 +1,26 @@
+
 import { NavLink } from 'react-router-dom'
 
 function Navbar() {
   return (
-    <nav>
-      <NavLink to="/" end>
+    <nav className="navbar">
+      <NavLink to="/" end className="navbar-brand">
         Pattern Lab
       </NavLink>
 
-      <NavLink to="/library">
-        Library
-      </NavLink>
+      <div className="navbar-links">
+        <NavLink to="/library">
+          Library
+        </NavLink>
 
-      <NavLink to="/measurements">
-        Measurements
-      </NavLink>
+        <NavLink to="/measurements">
+          Measurements
+        </NavLink>
 
-      <NavLink to="/collection">
-        My Collection
-      </NavLink>
+        <NavLink to="/collection">
+          My Collection
+        </NavLink>
+      </div>
     </nav>
   )
 }
