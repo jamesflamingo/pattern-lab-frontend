@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getGarments } from '../services/api'
 
-import modernDress from '../assets/9401d9ef-082f-464b-b45a-49f69ecabff6.png'
-import classicDress from '../assets/45e9085b-bcaf-4f3a-ae4c-8c28deba562a.png'
+import modernDress from '../images/9401d9ef-082f-464b-b45a-49f69ecabff6.png'
+import classicDress from '../images/45e9085b-bcaf-4f3a-ae4c-8c28deba562a.png'
 
-import classicCorset from '../assets/corset-clasico.png'
-import modernCorset from '../assets/corset-moderno.png'
+import classicCorset from '../images/corset-clasico.png'
+import modernCorset from '../images/corset-moderno.png'
 
-import classicSkirt from '../assets/910c3e25-63d8-4067-86d6-d91d0945bac1.png'
-import modernSkirt from '../assets/f42f5492-ca92-4705-bc75-2dc7c7bc50bb.png'
+import classicSkirt from '../images/910c3e25-63d8-4067-86d6-d91d0945bac1.png'
+import modernSkirt from '../images/f42f5492-ca92-4705-bc75-2dc7c7bc50bb.png'
 
 const categories = [
   {
@@ -78,9 +78,7 @@ function Dashboard() {
         <h1>Pattern Lab</h1>
 
         <p className="dashboard-intro">
-          Design, customize and create your own garment patterns.
-          Explore silhouettes, experiment with details and bring
-          your designs to life.
+       Design, customize and create unique garment patterns.
         </p>
       </header>
 
@@ -97,7 +95,7 @@ function Dashboard() {
 
             return (
               <section
-                className="garment-category"
+                className={`garment-category garment-category--${category.category.toLowerCase()}`}
                 key={category.category}
               >
                 <div className="category-heading">

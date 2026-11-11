@@ -1,4 +1,7 @@
-const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/+$/, '')
+
+const API_URL = (
+  import.meta.env.VITE_API_URL || 'http://localhost:3001'
+).replace(/\/+$/, '')
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_URL}${path}`, {
@@ -31,14 +34,18 @@ export function getGarment(id) {
   return request(`/garments/${encodeURIComponent(id)}`)
 }
 
-export function getComponents(garmentId) {
-  const query = garmentId
-    ? `?_where=${encodeURIComponent(
-        JSON.stringify({ garmentId: { eq: String(garmentId) } })
-      )}`
-    : ''
+// Download all components and filter them by garmentId in JavaScript.
+export async function getComponents(garmentId) {
+  const components = await request('/components')
 
-  return request(`/components${query}`)
+  if (!garmentId) {
+    return components
+  }
+
+  return components.filter(
+    (component) =>
+      String(component.garmentId) === String(garmentId)
+  )
 }
 
 export function getBodySizes() {

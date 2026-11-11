@@ -20,7 +20,11 @@ body {
 
 body {
   color: #222222;
-  background: #ffffff;
+  background-color: #eee1c9;
+  background-image: url("./images/16c4b398-ffa7-4b33-9bc2-4f2ace29e070.png");
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
   font-family: Georgia, serif;
 }
 

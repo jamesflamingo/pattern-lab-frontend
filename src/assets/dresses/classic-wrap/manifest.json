@@ -1,0 +1,53 @@
+{
+  "collection": "dress-components",
+  "items": [
+    {
+      "svg": "sleeves/flutter-left.svg",
+      "png": "sleeves/flutter-left.png",
+      "description": "Manga acampanada izquierda",
+      "color_groups": 20
+    },
+    {
+      "svg": "sleeves/flutter-right.svg",
+      "png": "sleeves/flutter-right.png",
+      "description": "Manga acampanada derecha",
+      "color_groups": 20
+    },
+    {
+      "svg": "sleeves/bishop-left.svg",
+      "png": "sleeves/bishop-left.png",
+      "description": "Manga abullonada izquierda con puño",
+      "color_groups": 20
+    },
+    {
+      "svg": "sleeves/bishop-right.svg",
+      "png": "sleeves/bishop-right.png",
+      "description": "Manga abullonada derecha con puño",
+      "color_groups": 20
+    },
+    {
+      "svg": "necklines/wrap-v.svg",
+      "png": "necklines/wrap-v.png",
+      "description": "Cuerpo superior con escote cruzado en V",
+      "color_groups": 20
+    },
+    {
+      "svg": "necklines/square.svg",
+      "png": "necklines/square.png",
+      "description": "Cuerpo superior con escote cuadrado",
+      "color_groups": 20
+    },
+    {
+      "svg": "hems/wrap-tulip.svg",
+      "png": "hems/wrap-tulip.png",
+      "description": "Terminación de falda cruzada",
+      "color_groups": 20
+    },
+    {
+      "svg": "hems/cascade.svg",
+      "png": "hems/cascade.png",
+      "description": "Terminación de falda en cascada",
+      "color_groups": 20
+    }
+  ]
+}

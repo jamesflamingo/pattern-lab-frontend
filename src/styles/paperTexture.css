@@ -9,23 +9,12 @@
   --paper-brown: #927454;
   --paper-text: #594735;
   --paper-border: #CBB697;
-  --paper-texture: url("../assets/16c4b398-ffa7-4b33-9bc2-4f2ace29e070.png");
 }
 
 /* NAVBAR */
 
 .navbar {
   background-color: var(--paper-light);
-
-  background-image:
-    linear-gradient(
-      rgba(245, 232, 210, 0.65),
-      rgba(245, 232, 210, 0.65)
-    ),
-    var(--paper-texture);
-
-  background-size: cover;
-  background-position: center;
 
   border-bottom: 1px solid var(--paper-border);
 
@@ -36,19 +25,8 @@
 
 /* CARDS */
 
-.card,
-.garment-card-image {
+.card {
   background-color: var(--paper-bg);
-
-  background-image:
-    linear-gradient(
-      rgba(248, 238, 218, 0.35),
-      rgba(248, 238, 218, 0.35)
-    ),
-    var(--paper-texture);
-
-  background-size: cover;
-  background-position: center;
 
   border: 1px solid rgba(145, 112, 78, 0.25);
   border-radius: 12px;
