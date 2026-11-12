@@ -56,7 +56,9 @@ function Measurements() {
     <main className="catalog-page measurements-page">
       <header className="page-heading">
         <h1>The Atelier</h1>
-        <p>A space to design, customize and create your own garments.</p>
+        <p className="measurements-intro">
+          The Atelier tool combines size conversion and a fabric calculator for material and cost estimates.
+        </p>
       </header>
 
       <div className="measurements-layout">

@@ -5,7 +5,7 @@ function ComponentSelector({
 }) {
   return (
     <section className="component-selector">
-      <h2>Garment components</h2>
+      <h2>Garment Components</h2>
 
       <div className="component-list">
         {components.map((component) => (
@@ -20,7 +20,6 @@ function ComponentSelector({
             onClick={() => onSelectComponent(component.id)}
           >
             <span>{component.name}</span>
-            <span>→</span>
           </button>
         ))}
       </div>

@@ -278,7 +278,7 @@
   gap: 26px;
   border: 1px solid rgba(120, 80, 42, 0.42);
   border-radius: 8px;
-  background: rgba(250, 240, 222, 0.64);
+  background: rgba(250, 240, 222, 0.82);
 }
 
 .design-card h2 {
@@ -307,6 +307,55 @@
   background: rgba(245, 228, 199, 0.72);
   color: var(--ink-soft);
   font: 10px var(--atelier-font);
+}
+
+.design-pattern {
+  margin-top: 10px;
+  font: 11px var(--atelier-font);
+}
+
+.design-pattern p {
+  margin: 0 0 6px;
+}
+
+.design-pattern .text-link {
+  display: inline-block;
+  margin-right: 14px;
+}
+
+.design-pattern__download {
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid rgba(112, 67, 34, 0.5);
+  background: transparent;
+  font-family: inherit;
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.collection-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  min-height: 0;
+  margin-top: 10px;
+  font: 12px var(--atelier-font);
+}
+
+.collection-pagination button {
+  padding: 4px 8px;
+  border: 1px solid rgba(120, 80, 42, 0.45);
+  border-radius: 4px;
+  background: rgba(250, 240, 222, 0.82);
+  color: var(--atelier-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.collection-pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .design-actions {
@@ -427,7 +476,7 @@
   padding: 16px 16px 66px;
   border: 1px solid rgba(120, 80, 42, 0.45);
   border-radius: 8px;
-  background: rgba(250, 240, 222, 0.4);
+  background: rgba(250, 240, 222, 0.82);
 }
 
 .measurements-layout__sizes > .measurement-table-wrap,
@@ -473,8 +522,8 @@
 
 .measurements-page .page-heading {
   max-width: none;
-  width: min(calc(100% + 100px), 100vw);
-  margin: 0 0 16px calc((100% - min(calc(100% + 100px), 100vw)) / 2);
+  width: calc(min(calc(100% + 100px), 100vw) - 60px);
+  margin: 0 0 16px calc((100% - min(calc(100% + 100px), 100vw)) / 2 + 30px);
   text-align: left;
 }
 
@@ -600,7 +649,7 @@
 
   .measurements-page .measurements-layout {
     min-height: 310px;
-    margin-top: clamp(8px, calc(100vh - 800px), 100px);
+    margin-top: clamp(28px, calc(100vh - 780px), 120px);
   }
 
   .measurements-page .measurement-table--sizes th,
@@ -629,8 +678,8 @@
 
 @media (max-width: 700px) {
   .measurements-page .page-heading {
-    width: 100%;
-    margin-left: 0;
+    width: calc(100% - 60px);
+    margin-left: 30px;
   }
 }
 

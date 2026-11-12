@@ -69,9 +69,8 @@ function PatternLibrary() {
     <main className="catalog-page">
       <div className="catalog-toolbar">
         <header className="page-heading">
-          <p className="section-kicker">The pattern archive</p>
           <h1>Library</h1>
-          <p></p>
+          <p className="library-intro">Explore our curated garment collections here are some examples:</p>
         </header>
 
         <section className="catalog-controls" aria-label="Filter patterns">

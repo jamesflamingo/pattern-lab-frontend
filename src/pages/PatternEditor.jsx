@@ -10,8 +10,34 @@ import {
 } from '../services/api'
 import ComponentSelector from '../components/ComponentSelector'
 import CustomSelect from '../components/CustomSelect'
+import SizeInput from '../components/SizeInput'
 import DressPreview from '../components/DressPreview'
 import { dressConfigs, getAvailableOptions } from '../components/dressConfigs'
+import editorPencils from '../assets/c46a9cca-1ea3-4309-9015-12cc2b9905c7.png'
+import classicSkirtPreview from '../assets/classic-skirt-basic-v2.png'
+import classicSkirtRuffles from '../assets/classic-skirt-ruffles-v2.png'
+import classicSkirtOrnate from '../assets/classic-skirt-ornate-v2.png'
+import modernSkirtPunk from '../assets/modern-skirt-punk-v2.png'
+import modernSkirtShort from '../assets/modern-skirt-short-v2.png'
+import modernSkirtLong from '../assets/modern-skirt-long-v2.png'
+
+const skirtDesignId = 'modern-skirt-design'
+const classicSkirtDesignId = 'classic-skirt-design'
+const classicSkirtDesigns = {
+  Basic: { src: classicSkirtPreview, x: 7, y: -7, width: 1219, height: 1290 },
+  Ruffles: { src: classicSkirtRuffles, x: 0, y: 0, width: 1233, height: 1275 },
+  'Ornate ruffles': { src: classicSkirtOrnate, x: 0, y: 0, width: 1233, height: 1276 },
+}
+const skirtDesignLabels = {
+  Plain: 'Short basic',
+  'Chains and buckles': 'Punk',
+  'Long wrap': 'Long basic',
+}
+const modernSkirtPreviews = {
+  Plain: { src: modernSkirtShort, x: 55, y: -117, width: 922, height: 1382 },
+  'Chains and buckles': { src: modernSkirtPunk, x: 55, y: -117, width: 922, height: 1382 },
+  'Long wrap': { src: modernSkirtLong, x: 0, y: 0, width: 1024, height: 1535 },
+}
 
 function PatternEditor() {
   const { id } = useParams()
@@ -33,7 +59,9 @@ function PatternEditor() {
   const isModernDress = String(id) === '2'
   const isClassicCorset = String(id) === '6'
   const isModernCorset = String(id) === '7'
-  const hasGarmentPreview = String(id) in dressConfigs
+  const isModernSkirt = String(id) === '25'
+  const isClassicSkirt = String(id) === '21'
+  const hasGarmentPreview = String(id) in dressConfigs || isModernSkirt || isClassicSkirt
 
   useEffect(() => {
     let active = true
@@ -120,7 +148,38 @@ function PatternEditor() {
                 defaultSize: editorComponents[0]?.defaultSize ?? 38,
               },
             ]
-          : editorComponents
+          : isModernSkirt
+            ? [
+                {
+                  id: 'modern-skirt-long',
+                  name: 'Long',
+                  components: [{
+                    id: skirtDesignId,
+                    options: ['Long wrap'],
+                    defaultOption: 'Long wrap',
+                    defaultSize: garmentData.defaultSize ?? 38,
+                  }],
+                },
+                {
+                  id: 'modern-skirt-short',
+                  name: 'Short',
+                  components: [{
+                    id: skirtDesignId,
+                    options: ['Plain', 'Chains and buckles'],
+                    defaultOption: 'Plain',
+                    defaultSize: garmentData.defaultSize ?? 38,
+                  }],
+                },
+              ]
+            : isClassicSkirt
+              ? [{
+                  id: classicSkirtDesignId,
+                  name: 'Design',
+                  options: Object.keys(classicSkirtDesigns),
+                  defaultOption: 'Basic',
+                  defaultSize: garmentData.defaultSize ?? 38,
+                }]
+              : editorComponents
 
         const initialOptions = {}
         const initialSizes = {}
@@ -128,6 +187,16 @@ function PatternEditor() {
         visibleComponents
           .flatMap((component) => component.components ?? [component])
           .forEach((component) => {
+            if (isModernSkirt && component.id === skirtDesignId) {
+              const savedOption = designData?.options?.[skirtDesignId]
+              initialOptions[skirtDesignId] =
+                savedOption && Object.hasOwn(skirtDesignLabels, savedOption)
+                  ? savedOption
+                  : 'Long wrap'
+              initialSizes[skirtDesignId] =
+                designData?.sizes?.[skirtDesignId] ?? component.defaultSize
+              return
+            }
             const savedOption = designData?.options?.[component.id]
             const hasSavedOption = component.options.includes(savedOption)
             if (!isModernDress || designData || hasSavedOption) {
@@ -145,7 +214,11 @@ function PatternEditor() {
         setSelectedOptions(initialOptions)
         setSelectedSizes(initialSizes)
         setSelectedComponentId(
-          visibleComponents[0]?.id ?? null
+          isModernSkirt
+            ? initialOptions[skirtDesignId] === 'Long wrap'
+              ? 'modern-skirt-long'
+              : 'modern-skirt-short'
+            : visibleComponents[0]?.id ?? null
         )
         setDesignName(
           designData?.name ?? `${garmentData.name} — my design`
@@ -169,6 +242,8 @@ function PatternEditor() {
     isClassicCorset,
     isModernCorset,
     isModernDress,
+    isModernSkirt,
+    isClassicSkirt,
   ])
 
   function handleOptionChange(componentId, newOption) {
@@ -188,6 +263,19 @@ function PatternEditor() {
   function handleComponentSelect(componentId) {
     setSelectedComponentId(componentId)
 
+    if (isModernSkirt) {
+      const component = components.find((item) => item.id === componentId)?.components?.[0]
+      if (component) {
+        setSelectedOptions((previousOptions) => ({
+          ...previousOptions,
+          [skirtDesignId]: component.options.includes(previousOptions[skirtDesignId])
+            ? previousOptions[skirtDesignId]
+            : component.defaultOption,
+        }))
+      }
+      return
+    }
+
     if (!isModernDress) return
 
     const component = components.find(
@@ -203,6 +291,7 @@ function PatternEditor() {
 
   async function handleSave(event) {
     event.preventDefault()
+    const createPattern = event.nativeEvent.submitter?.value === 'create-pattern'
     setSaving(true)
     setError(null)
 
@@ -214,16 +303,19 @@ function PatternEditor() {
       options: selectedOptions,
       sizes: selectedSizes,
       updatedAt: now,
+      ...(createPattern ? { pattern2d: 'generic-v1' } : {}),
     }
 
     try {
-      if (designId) {
-        await updateDesign(designId, design)
-      } else {
-        await createDesign({ ...design, createdAt: now })
+      const savedDesign = designId
+        ? await updateDesign(designId, design)
+        : await createDesign({ ...design, createdAt: now })
+
+      if (createPattern && savedDesign.pattern2d !== 'generic-v1') {
+        throw new Error('The server did not save the example pattern.')
       }
 
-      navigate('/collection')
+      navigate('/collection', createPattern ? { state: { designId: savedDesign.id } } : undefined)
     } catch (requestError) {
       setError(`Could not save your design: ${requestError.message}`)
       setSaving(false)
@@ -234,6 +326,9 @@ function PatternEditor() {
     (component) =>
       String(component.id) === String(selectedComponentId)
   )
+  const classicSkirtOption = selectedOptions[classicSkirtDesignId] ?? 'Basic'
+  const classicPreview = classicSkirtDesigns[classicSkirtOption] ?? classicSkirtDesigns.Basic
+  const modernPreview = modernSkirtPreviews[selectedOptions[skirtDesignId]] ?? modernSkirtPreviews['Long wrap']
 
   if (loading) {
     return (
@@ -268,7 +363,7 @@ function PatternEditor() {
 
   return (
     <main
-      className={`catalog-page editor-page${hasGarmentPreview ? ' editor-page--with-preview' : ''}`}
+      className={`catalog-page editor-page${hasGarmentPreview ? ' editor-page--with-preview' : ''}${isModernSkirt || isClassicSkirt ? ' editor-page--skirt' : ''}`}
     >
       <header className="page-heading">
         <p className="section-kicker">
@@ -279,7 +374,25 @@ function PatternEditor() {
         <p>{garment.description}</p>
       </header>
 
-      {hasGarmentPreview && (
+      {isModernSkirt || isClassicSkirt ? (
+        <section className="dress-preview skirt-preview" aria-label={`${isModernSkirt ? 'Modern' : 'Classic'} skirt preview`}>
+          <svg
+            className={`dress-preview__canvas skirt-preview__image${isModernSkirt ? ' skirt-preview__image--modern' : ' skirt-preview__image--classic'}`}
+            viewBox={isModernSkirt ? '0 0 1024 1535' : '0 0 1233 1276'}
+            role="img"
+            aria-label={isModernSkirt ? `Modern skirt: ${skirtDesignLabels[selectedOptions[skirtDesignId]] ?? 'Long basic'}` : `Classic skirt: ${classicSkirtOption}`}
+          >
+            <image
+              key={isModernSkirt ? modernPreview.src : classicPreview.src}
+              href={isModernSkirt ? modernPreview.src : classicPreview.src}
+              x={isModernSkirt ? modernPreview.x : classicPreview.x}
+              y={isModernSkirt ? modernPreview.y : classicPreview.y}
+              width={isModernSkirt ? modernPreview.width : classicPreview.width}
+              height={isModernSkirt ? modernPreview.height : classicPreview.height}
+            />
+          </svg>
+        </section>
+      ) : hasGarmentPreview && (
         <DressPreview
           garmentId={String(id)}
           selectedOptions={selectedOptions}
@@ -287,14 +400,15 @@ function PatternEditor() {
         />
       )}
 
-      <div className="editor-layout">
+      <form className="editor-layout" onSubmit={handleSave}>
         <ComponentSelector
+          key={id}
           components={components}
           selectedComponentId={selectedComponentId}
           onSelectComponent={handleComponentSelect}
         />
 
-        <form className="editor-form" onSubmit={handleSave}>
+        <div className="editor-form">
           <label className="catalog-search">
             <span>Design name</span>
             <input
@@ -314,7 +428,7 @@ function PatternEditor() {
               {(selectedComponent.components ?? [selectedComponent]).map(
                 (component) => (
                   <div className="component-editor__fields" key={component.id}>
-                    {selectedComponent.components && (
+                    {selectedComponent.components && !isModernSkirt && (
                       <h3>{component.name}</h3>
                     )}
 
@@ -329,7 +443,7 @@ function PatternEditor() {
                       }
                       options={component.options.map((option) => ({
                         value: option,
-                        label: option,
+                        label: isModernSkirt ? skirtDesignLabels[option] : option,
                       }))}
                       onChange={(option) => handleOptionChange(component.id, option)}
                     />
@@ -341,21 +455,14 @@ function PatternEditor() {
                       Size
                     </label>
 
-                    <input
+                    <SizeInput
                       id={`component-size-${component.id}`}
-                      type="number"
-                      required
-                      min="30"
-                      max="60"
-                      step="2"
                       value={
                         selectedSizes[component.id] ??
                         component.defaultSize ??
                         38
                       }
-                      onChange={(event) =>
-                        handleSizeChange(component.id, event.target.value)
-                      }
+                      onChange={(value) => handleSizeChange(component.id, value)}
                     />
                   </div>
                 )
@@ -379,26 +486,31 @@ function PatternEditor() {
               {error}
             </p>
           )}
+        </div>
 
-          <div className="form-actions">
-            <button
-              type="submit"
-              className="next-step"
-              disabled={saving || !components.length}
-            >
-              {saving
-                ? 'Saving…'
-                : designId
-                  ? 'Update design'
-                  : 'Save design'}
-            </button>
+        <div className="form-actions">
+          <button
+            type="submit"
+            className="next-step"
+            disabled={saving || !components.length}
+          >
+            {saving
+              ? 'Saving…'
+              : designId
+                ? 'Update design'
+                : 'Save Design'}
+          </button>
 
-            <Link className="text-link" to="/collection">
-              Cancel
-            </Link>
-          </div>
-        </form>
-      </div>
+          <button type="submit" className="next-step pattern-create" value="create-pattern" disabled={saving || !components.length}>
+            Create 2D Pattern
+          </button>
+
+          <Link className="text-link" to="/collection">
+            Cancel
+          </Link>
+        </div>
+        <img className="editor-decoration" src={editorPencils} alt="" />
+      </form>
     </main>
   )
 }

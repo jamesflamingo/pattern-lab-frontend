@@ -17,16 +17,8 @@
   font-size: 12px;
 }
 
-.garment-category--dress {
-  --img-size: 0.9;
-}
-
 .garment-category--skirt {
   --img-size: 0.95;
-}
-
-.garment-category--corset {
-  --img-size: 0.85;
 }
 
 .garment-category {
@@ -75,15 +67,27 @@
   object-position: center;
   transform: scale(calc(1.15 * var(--img-size, 1)));
   transform-origin: center center;
+  filter: brightness(0.94);
 }
 
-.garment-card-image img.garment-image--6,
+.garment-card-image img.garment-image--1 {
+  --img-size: 0.75;
+}
+
+.garment-card-image img.garment-image--2 {
+  --img-size: 0.782;
+}
+
+.garment-card-image img.garment-image--6 {
+  --img-size: 1.034;
+}
+
 .garment-card-image img.garment-image--7 {
-  --img-size: 1.12;
+  --img-size: 1.006;
 }
 
 .garment-card-image img.garment-image--25 {
-  --img-size: 0.9;
+  --img-size: 0.959;
 }
 
 .garment-card-content {
@@ -153,7 +157,7 @@
 
 .garment-card:hover .garment-card-image img {
   transform: scale(calc(1.20 * var(--img-size, 1))) translateY(-6px);
-  filter: drop-shadow(0 8px 5px rgba(65, 43, 25, 0.12));
+  filter: brightness(0.94) drop-shadow(0 8px 5px rgba(65, 43, 25, 0.12));
 }
 
 /* Accessibility: respect reduced motion */
@@ -164,7 +168,7 @@
 
   .garment-card:hover .garment-card-image img {
     transform: scale(calc(1.15 * var(--img-size, 1)));
-    filter: none;
+    filter: brightness(0.94);
   }
 }
 
@@ -234,6 +238,45 @@ nav {
 #root > main.measurements-page {
   overflow-y: auto;
   padding-bottom: 20px;
+  position: relative;
+  isolation: isolate;
+}
+
+.measurements-page::before {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  left: calc(max(0px, (100vw - 1340px) / 2) - 200px);
+  bottom: 0;
+  width: min(92vw, 1232.8px, calc((100vh - 64px) * 2));
+  aspect-ratio: 2 / 1;
+  background: url('./assets/20a5d67f-2374-43c1-8f11-a0a229af961f.png')
+    center / contain no-repeat;
+  pointer-events: none;
+}
+
+#root > main.collection-page {
+  position: relative;
+  isolation: isolate;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.collection-page::before {
+  content: '';
+  position: fixed;
+  z-index: -1;
+  right: calc(-25vw - 200px);
+  bottom: -200px;
+  width: 110vw;
+  height: 115vh;
+  background: url('./assets/bdf084f9-b5ce-48a3-bfaf-0caaeac0e2b3.png')
+    right bottom / contain no-repeat;
+  pointer-events: none;
+}
+
+#root > main.editor-page {
+  overflow: clip;
 }
 
 .dashboard {
@@ -250,11 +293,17 @@ nav {
   content: '';
   flex: 1 1 0;
   min-height: 0;
-  background-image: url('./assets/5b91f14d-84ce-4630-93d3-68b39788c576.png');
+  background-image: url('./assets/68367666-0f31-4944-afb4-5ef8842cb240.png');
   background-position: center bottom;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  filter: brightness(1.12) saturate(0.7) hue-rotate(4deg);
+  background-size: contain;
+  filter: brightness(0.9) saturate(0.85) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
+}
+
+.measurements-page::before,
+.collection-page::before,
+.editor-page .editor-decoration {
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.55));
 }
 
 #root > main.dashboard {
@@ -321,6 +370,10 @@ nav {
   object-fit: contain;
 }
 
+.garment-card-image img.garment-image--25 {
+  max-width: 63.3%;
+}
+
 .garment-card-content {
   flex: 0 0 auto;
   padding: 8px 12px;
@@ -349,12 +402,26 @@ nav {
   margin-bottom: 1.5vh;
 }
 
-.page-heading h1 {
-  font-size: clamp(26px, 5vh, 44px);
+.catalog-page .page-heading h1 {
+  font-size: calc(clamp(36px, 5vw, 60px) - 10px);
 }
 
 .page-heading > p:last-child {
   font-size: clamp(13px, 1.9vh, 16px);
+}
+
+.measurements-page .page-heading > p.measurements-intro,
+.collection-page .page-heading > p:last-child,
+.catalog-page .page-heading > p.library-intro {
+  color: #5d2a01;
+  font-family: "Snell Roundhand", "Apple Chancery", cursive;
+}
+
+.measurements-page .page-heading > p.measurements-intro,
+.collection-page .page-heading > p:last-child,
+.catalog-page .page-heading > p.library-intro {
+  font-size: 24px;
+  line-height: 1.3;
 }
 
 .catalog-controls {
@@ -468,6 +535,10 @@ nav {
   margin-bottom: 1vh;
 }
 
+.editor-page .page-heading > .section-kicker {
+  margin-block: 8px;
+}
+
 .editor-page .page-heading > p:last-child {
   display: none;
 }
@@ -503,12 +574,12 @@ nav {
   grid-row: 2;
   width: min(100%, 613px);
   justify-self: center;
-  grid-template-columns: minmax(150px, 0.7fr) minmax(0, 1.3fr);
-  grid-template-rows: minmax(0, 1fr);
-  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  align-items: stretch;
   gap: 8px;
-  min-height: clamp(820px, 95vh, 960px);
-  padding: 16% 12% 10%;
+  min-height: 0;
+  padding: 0;
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
@@ -550,6 +621,10 @@ nav {
   filter: grayscale(1) contrast(1.22) brightness(0.97);
 }
 
+.editor-page--with-preview .dress-preview__canvas--corset[aria-label='Modern Corset'] {
+  filter: grayscale(1) contrast(1.22) brightness(0.9);
+}
+
 .editor-page--with-preview .editor-layout {
   grid-column: 1;
   grid-row: 2;
@@ -560,26 +635,175 @@ nav {
   grid-column: 1 / -1;
   width: min(100%, 613px);
   justify-self: center;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
-  grid-template-rows: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto auto;
 }
 
 .editor-page .editor-layout .component-selector,
-.editor-page .editor-layout .editor-form {
+.editor-page .editor-layout .editor-form,
+.editor-page .editor-layout .form-actions {
   min-width: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+  box-sizing: border-box;
+  border: 1px solid rgba(120, 80, 42, 0.45);
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.82);
   box-shadow: none;
 }
 
 .editor-page .editor-layout .component-selector {
-  padding: 14px 12px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-page .component-selector h2,
+.editor-page .component-editor h2 {
+  font-family: "Snell Roundhand", "Apple Chancery", cursive;
+}
+
+.editor-page .component-selector h2 {
+  padding: 12px;
+  border-radius: 7px 7px 0 0;
+  background: rgba(232, 209, 173, 0.55);
+  color: #5d2a01;
+  font-size: 24px;
+  text-align: center;
+  text-transform: none;
 }
 
 .editor-page .editor-layout .editor-form {
-  gap: 16px;
-  padding: 16px 12px;
+  gap: 10px;
+  padding: 12px 12px 6px;
+  grid-template-rows: auto 1fr;
+}
+
+.editor-page .component-editor {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.editor-page .component-editor__fields {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.editor-page .component-editor .section-kicker,
+.editor-page .component-editor h2,
+.editor-page .editor-form .component-style-select,
+.editor-page .editor-form .size-label,
+.editor-page .component-editor .field-note {
+  margin: 0;
+}
+
+.editor-page .editor-form .component-style-select {
+  align-self: stretch;
+  gap: 22px;
+}
+
+.editor-page .component-style-select > span:first-child {
+  position: relative;
+  top: 6px;
+}
+
+.editor-page .editor-form .component-style-select,
+.editor-page .editor-form .size-label {
+  font: 11px var(--atelier-font);
+  letter-spacing: 0.07em;
+}
+
+.editor-page .editor-form .size-label {
+  margin-top: 4px;
+}
+
+.editor-page .component-editor__fields .size-input {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  margin-top: -6px;
+  transform: translateY(-30px);
+}
+
+.editor-page .component-editor__fields .size-input input {
+  width: 100%;
+  max-width: none;
+  padding-right: 32px;
+  appearance: textfield;
+}
+
+.size-input input::-webkit-inner-spin-button,
+.size-input input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.size-input__controls {
+  position: absolute;
+  inset: 1px 1px 1px auto;
+  width: 26px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0 3px 3px 0;
+}
+
+.size-input__controls button {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.size-input__controls button:hover,
+.size-input__controls button:active {
+  background: rgba(232, 209, 173, 0.8);
+}
+
+.size-input__controls button:focus-visible {
+  outline: 1px solid var(--atelier-ink);
+  outline-offset: -2px;
+}
+
+.size-input__arrow {
+  width: 0;
+  height: 0;
+  border-inline: 4px solid transparent;
+}
+
+.size-input__arrow--up {
+  border-bottom: 5px solid #5d2a01;
+}
+
+.size-input__arrow--down {
+  border-top: 5px solid #5d2a01;
+}
+
+.editor-page .editor-layout .form-actions {
+  grid-column: 1 / -1;
+  justify-content: center;
+  align-self: start;
+  min-height: 22px;
+  padding: 0 12px;
+}
+
+.editor-page .editor-decoration {
+  position: absolute;
+  z-index: -1;
+  left: 5%;
+  bottom: -35px;
+  width: 90%;
+  height: auto;
+  transform: scaleX(-1);
+  pointer-events: none;
 }
 
 .editor-page .editor-form input,
@@ -590,13 +814,86 @@ nav {
 
 .editor-page .component-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
 }
 
 .editor-page .component-button {
+  flex: 1 1 0;
   min-height: 36px;
-  font-size: 13px;
+  padding: 6px 12px;
+  border: 0;
+  border-top: 1px solid rgba(120, 80, 42, 0.24);
+  background: transparent;
+  color: var(--atelier-ink);
+  font-family: var(--atelier-font);
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.editor-page .component-button:hover {
+  background: rgba(232, 209, 173, 0.32);
+}
+
+.editor-page .component-button.active {
+  font-weight: bold;
+}
+
+.editor-page .component-button:focus-visible {
+  outline: 1px solid var(--atelier-ink);
+  outline-offset: 2px;
+}
+
+.editor-page--skirt .skirt-preview__image {
+  flex: 0 0 calc(50% + 80px);
+  height: calc(50% + 80px);
+  max-height: calc(50% + 80px);
+  width: auto;
+  object-fit: contain;
+  align-self: center;
+  margin: auto;
+  position: relative;
+  left: 10px;
+  filter: grayscale(1) contrast(1.22) brightness(0.97);
+}
+
+.editor-page--skirt .skirt-preview__image--modern {
+  filter: grayscale(1) contrast(1.1) brightness(0.97);
+  top: 10px;
+}
+
+.editor-page--skirt .skirt-preview__image--classic {
+  flex-basis: calc(50% + 70px);
+  height: calc(50% + 70px);
+  max-height: calc(50% + 70px);
+}
+
+.editor-page .form-actions .next-step {
+  min-height: 0;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--atelier-ink);
+  font-family: inherit;
+  line-height: 15px;
+  cursor: pointer;
+}
+
+.editor-page .form-actions .text-link {
+  padding-bottom: 0;
+  line-height: 15px;
+}
+
+.editor-page .form-actions .next-step:focus-visible {
+  outline: 1px solid var(--atelier-ink);
+  outline-offset: 2px;
+}
+
+.editor-page .form-actions .pattern-create:disabled {
+  cursor: not-allowed;
 }
 
 @media (max-width: 760px) {
@@ -610,8 +907,8 @@ nav {
     grid-row: auto;
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
-    min-height: 800px;
-    padding: 30% 12% 10%;
+    min-height: 0;
+    padding: 0;
   }
 
   .editor-page--with-preview .dress-preview {
@@ -703,7 +1000,7 @@ nav {
   overflow: visible;
   border: 0;
   border-radius: 8px;
-  background: rgba(250, 240, 222, 0.62);
+  background: rgba(250, 240, 222, 0.82);
   box-shadow: none;
 }
 
