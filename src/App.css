@@ -505,6 +505,7 @@ nav {
   width: calc(118% + 150px);
   height: calc(112% + 150px);
   transform: translate(-50%, -50%);
+  filter: brightness(1.07);
   background: url('./assets/541e8229-268d-4a4b-add5-3a26dd859899.png')
     center / contain no-repeat;
 }
@@ -620,6 +621,32 @@ nav {
 
 .editor-page {
   padding-bottom: 9vh;
+}
+
+.editor-page--with-preview .dress-preview__canvas--corset {
+  flex: 0 0 calc(50% + 70px);
+  height: calc(50% + 70px);
+  max-height: calc(50% + 70px);
+  width: auto;
+  align-self: center;
+  margin: auto;
+  position: relative;
+  left: 15px;
+}
+
+.editor-page--with-preview .dress-preview__canvas--dress {
+  flex: 0 0 calc(100% - 100px);
+  height: calc(100% - 100px);
+  max-height: calc(100% - 100px);
+  width: auto;
+  align-self: center;
+  margin: auto;
+  position: relative;
+  left: 15px;
+}
+
+.editor-page--with-preview .dress-preview__canvas--dress[aria-label='Classic Dress'] {
+  top: 10px;
 }
 
 .editor-page .editor-form {

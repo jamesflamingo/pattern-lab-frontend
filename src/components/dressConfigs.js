@@ -19,7 +19,6 @@ import classicCorsetScoop from '../assets/86a5a2b7-f3a7-4001-b8f4-c105d0cc79cc.p
 import classicCorsetStraight from '../assets/c1d2e6b0-2426-45f1-bc35-5ee90a9426f4.png'
 import modernCorsetBowStraps from '../assets/descarga.png'
 import modernCorsetBuckleStraps from '../assets/descarga (1).png'
-import modernCorsetShoulderTieStraps from '../assets/ef9fb40a-e7c2-407a-8f05-4b035f69ec39.png'
 import modernCorsetRuffleStraps from '../assets/descarga (3).png'
 
 // Todas las coordenadas están en píxeles del vestido base (width x height).
@@ -46,24 +45,17 @@ export const dressConfigs = {
         pieces: {
           'Bow-tie Straps': {
             src: modernCorsetBowStraps,
-            x: 87.4,
-            y: 83.4,
-            width: 978.3,
-            height: 1245.2,
+            x: 69.4,
+            y: 96.1,
+            width: 1037.2,
+            height: 1231.7,
           },
           'Buckle Straps': {
             src: modernCorsetBuckleStraps,
-            x: 84.1,
-            y: 83.6,
-            width: 985,
-            height: 1244.8,
-          },
-          'Shoulder-tie Straps': {
-            src: modernCorsetShoulderTieStraps,
-            x: 62.59156,
-            y: 78.34871,
-            width: 1028.9035,
-            height: 1251.86575,
+            x: 158.3,
+            y: 87.4,
+            width: 834.4,
+            height: 1242,
           },
           'Ruffle Straps': {
             src: modernCorsetRuffleStraps,

@@ -78,7 +78,6 @@ function PatternEditor() {
             73: [
               'Bow-tie Straps',
               'Buckle Straps',
-              'Shoulder-tie Straps',
               'Ruffle Straps',
             ],
           }
@@ -91,9 +90,12 @@ function PatternEditor() {
             ? {
                 ...component,
                 options: available,
-                defaultOption: available.includes(component.defaultOption)
-                  ? component.defaultOption
-                  : available[0],
+                defaultOption:
+                  isClassicDress && String(component.id) === '40'
+                    ? 'Asymmetric'
+                    : available.includes(component.defaultOption)
+                      ? component.defaultOption
+                      : available[0],
               }
             : component
 

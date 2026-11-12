@@ -29,11 +29,13 @@ function DressPreview({
   const base = activeLayers.find(({ piece }) => piece.base)?.piece.base ?? config.base
 
   const baseMaskId = `${uid}-base`
+  const isCorset = ['6', '7'].includes(String(garmentId))
+  const isDress = ['1', '2'].includes(String(garmentId))
 
   return (
     <section className="dress-preview">
       <svg
-        className="dress-preview__canvas"
+        className={`dress-preview__canvas${isCorset ? ' dress-preview__canvas--corset' : ''}${isDress ? ' dress-preview__canvas--dress' : ''}`}
         viewBox={`0 0 ${config.width} ${config.height}`}
         role="img"
         aria-label={config.name}
