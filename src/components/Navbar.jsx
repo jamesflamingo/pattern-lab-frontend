@@ -13,12 +13,8 @@ function Navbar() {
           Library
         </NavLink>
 
-        <NavLink to="/atelier">
-          Atelier
-        </NavLink>
-
         <NavLink to="/measurements">
-          Measurements
+          Atelier
         </NavLink>
 
         <NavLink to="/collection">

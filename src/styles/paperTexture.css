@@ -16,7 +16,7 @@
 .navbar {
   background-color: var(--paper-light);
 
-  border-bottom: 1px solid var(--paper-border);
+  border-bottom: 1px solid var(--paper-text);
 
   box-shadow: 0 3px 10px rgba(83, 61, 39, 0.08);
 

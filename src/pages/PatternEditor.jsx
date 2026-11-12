@@ -9,6 +9,7 @@ import {
   updateDesign,
 } from '../services/api'
 import ComponentSelector from '../components/ComponentSelector'
+import CustomSelect from '../components/CustomSelect'
 import DressPreview from '../components/DressPreview'
 import { dressConfigs, getAvailableOptions } from '../components/dressConfigs'
 
@@ -317,31 +318,21 @@ function PatternEditor() {
                       <h3>{component.name}</h3>
                     )}
 
-                    <label
-                      className="select-label"
-                      htmlFor={`component-option-${component.id}`}
-                    >
-                      Style
-                    </label>
-
-                    <select
-                      id={`component-option-${component.id}`}
+                    <CustomSelect
+                      className="component-style-select"
+                      label="Style"
                       value={
                         selectedOptions[component.id] ??
                         component.defaultOption ??
                         component.options[0] ??
                         ''
                       }
-                      onChange={(event) =>
-                        handleOptionChange(component.id, event.target.value)
-                      }
-                    >
-                      {component.options.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
+                      options={component.options.map((option) => ({
+                        value: option,
+                        label: option,
+                      }))}
+                      onChange={(option) => handleOptionChange(component.id, option)}
+                    />
 
                     <label
                       className="select-label size-label"

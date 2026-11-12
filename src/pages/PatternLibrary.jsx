@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getGarments } from '../services/api'
+import CustomSelect from '../components/CustomSelect'
 
 import modernDress from '../assets/icons/c1154689-812b-4dc0-bfb9-1ebc83f81e49.png'
 import classicDress from '../assets/icons/77501021-30fe-4e11-9440-5280061ef369.png'
@@ -8,6 +9,7 @@ import classicCorset from '../assets/icons/3e3c09a4-cf23-433c-9bff-90f035d33442.
 import modernCorset from '../assets/icons/8de6f20f-fde9-420e-8b99-41c32aca6aab.png'
 import classicSkirt from '../assets/icons/d7842ebe-4288-4ddc-8f4b-bdedea52c77e.png'
 import modernSkirt from '../assets/icons/268e3841-2374-4b35-a3f8-5656ddfb7484.png'
+import editGarment from '../assets/595a5f3d-ef50-4a68-ace5-448853d31b5f.png'
 
 const categories = [
   {
@@ -83,18 +85,12 @@ function PatternLibrary() {
             />
           </label>
 
-          <label className="catalog-category">
-            <span>Category</span>
-            <select
-              value={category}
-              onChange={(event) => setCategory(event.target.value)}
-            >
-              <option>All</option>
-              {categories.map((item) => (
-                <option key={item.category}>{item.category}</option>
-              ))}
-            </select>
-          </label>
+          <CustomSelect
+            label="Category"
+            value={category}
+            options={['All', ...categories.map((item) => item.category)].map((item) => ({ value: item, label: item }))}
+            onChange={setCategory}
+          />
         </section>
       </div>
 
@@ -153,9 +149,13 @@ function PatternLibrary() {
                           <div className="garment-card-content">
                             <p className="garment-style">{garment.style}</p>
                             <h3>{garment.name}</h3>
-                            <p>{garment.description}</p>
-                            <Link to={`/editor/${garment.id}`}>
-                              Customize garment →
+                           <p>
+  {String(garment.id) === '1'
+    ? 'Timeless dress with a flattering silhouette and elegant details.'
+    : garment.description}
+</p>
+                            <Link className="garment-edit-link" to={`/editor/${garment.id}`}>
+                              <img src={editGarment} alt="Edit garment" />
                             </Link>
                           </div>
                         </article>

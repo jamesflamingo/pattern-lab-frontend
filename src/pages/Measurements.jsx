@@ -1,5 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
+import FabricEstimate from '../components/FabricEstimate'
+import CustomSelect from '../components/CustomSelect'
 import { getBodySizes } from '../services/api'
+
+const measurementRows = [
+  { key: 'bust', label: 'Bust' },
+  { key: 'waist', label: 'Waist' },
+  { key: 'hips', label: 'Hips' },
+  { key: 'shoulderWidth', label: 'Shoulder' },
+  { key: 'armLength', label: 'Arm' },
+]
 
 function Measurements() {
   const [sizes, setSizes] = useState([])
@@ -43,69 +53,75 @@ function Measurements() {
   }
 
   return (
-    <main className="catalog-page">
+    <main className="catalog-page measurements-page">
       <header className="page-heading">
-        <p className="section-kicker">The fit reference</p>
-        <h1>Body Measurements</h1>
-        <p>Compare standard measurements before choosing a pattern size.</p>
+        <h1>The Atelier</h1>
+        <p>A space to design, customize and create your own garments.</p>
       </header>
 
-      <section className="measurement-controls" aria-label="Measurement options">
-        <label className="catalog-search measurement-search">
-          <span>Find a size</span>
-          <input
-            type="search"
-            inputMode="numeric"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="For example, 38"
-          />
-        </label>
+      <div className="measurements-layout">
+        <section className="measurements-layout__sizes" aria-labelledby="body-measurements-title">
+          <h2 className="measurements-panel-title" id="body-measurements-title">Body Measurements</h2>
+          <section className="measurement-controls" aria-label="Measurement options">
+            <label className="catalog-search measurement-search">
+              <span>Find a size</span>
+              <input
+                type="search"
+                inputMode="numeric"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="For example, 38"
+              />
+            </label>
 
-        <label className="catalog-category measurement-unit">
-          <span>Units</span>
-          <select value={unit} onChange={(event) => setUnit(event.target.value)}>
-            <option value="cm">Metric (cm)</option>
-            <option value="in">US / Imperial (in)</option>
-          </select>
-        </label>
-      </section>
+            <CustomSelect
+              className="measurement-unit"
+              label="Units"
+              value={unit}
+              options={[
+                { value: 'cm', label: 'Metric (cm)' },
+                { value: 'in', label: 'US / Imperial (in)' },
+              ]}
+              onChange={setUnit}
+            />
+          </section>
 
-      {loading && <p className="page-message" role="status">Loading size references…</p>}
-      {error && <p className="page-message error-message" role="alert">Could not load size references: {error}</p>}
+          {loading && <p className="page-message" role="status">Loading size references…</p>}
+          {error && <p className="page-message error-message" role="alert">Could not load size references: {error}</p>}
 
-      {!loading && !error && (
-        <div className="measurement-table-wrap">
-          <table className="measurement-table">
-            <caption>
-              Standard body measurements in {unit === 'cm' ? 'centimeters (cm)' : 'inches (in)'}
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Size</th>
-                <th scope="col">Bust</th>
-                <th scope="col">Waist</th>
-                <th scope="col">Hips</th>
-                <th scope="col">Shoulder</th>
-                <th scope="col">Arm</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredSizes.map((item) => (
-                <tr key={item.id}>
-                  <th scope="row">{item.size}</th>
-                  <td>{formatMeasurement(item.bust)}</td>
-                  <td>{formatMeasurement(item.waist)}</td>
-                  <td>{formatMeasurement(item.hips)}</td>
-                  <td>{formatMeasurement(item.shoulderWidth)}</td>
-                  <td>{formatMeasurement(item.armLength)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {!filteredSizes.length && <p className="empty-state">No size references match that number.</p>}
-        </div>
-      )}
+          {!loading && !error && (
+            <div className="measurement-table-wrap">
+              {filteredSizes.length > 0 && (
+                <table className="measurement-table measurement-table--sizes">
+                  <caption>
+                    Standard body measurements in {unit === 'cm' ? 'centimeters (cm)' : 'inches (in)'}
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Size</th>
+                      {filteredSizes.map((item) => (
+                        <th scope="col" key={item.id}>{item.size}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {measurementRows.map(({ key, label }) => (
+                      <tr key={key}>
+                        <th scope="row">{label}</th>
+                        {filteredSizes.map((item) => (
+                          <td key={item.id}>{formatMeasurement(item[key])}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+              {!filteredSizes.length && <p className="empty-state">No size references match that number.</p>}
+            </div>
+          )}
+        </section>
+        <FabricEstimate />
+      </div>
     </main>
   )
 }

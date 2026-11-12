@@ -4,12 +4,6 @@
   box-sizing: border-box;
 }
 
-.dashboard-header {
-  max-width: 760px;
-  margin: 0 auto 55px;
-  text-align: center;
-}
-
 .dashboard-intro {
   max-width: 620px;
   margin: 0 auto;
@@ -104,6 +98,30 @@
 .garment-card-content a {
   display: inline-block;
   margin-top: 15px;
+}
+
+.garment-card-content .garment-edit-link {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding: 3px 8px;
+  border: 1px solid rgba(120, 80, 42, 0.55);
+  border-radius: 4px;
+  background-color: rgba(232, 209, 173, 0.55);
+}
+
+.garment-card-content .garment-edit-link:hover,
+.garment-card-content .garment-edit-link:focus-visible {
+  background-color: rgba(232, 209, 173, 0.8);
+}
+
+.garment-edit-link img {
+  display: block;
+  width: 105px;
+  max-width: 100%;
+  height: auto;
 }
 
 .error-message {
@@ -213,27 +231,34 @@ nav {
   box-sizing: border-box;
 }
 
+#root > main.measurements-page {
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
 .dashboard {
   width: 100%;
-  max-width: 1400px;
+  max-width: none;
   margin: 0 auto;
-  padding: 2vh 5%;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-.dashboard-header {
-  margin: 0 auto 2vh;
+.dashboard::after {
+  content: '';
+  flex: 1 1 0;
+  min-height: 0;
+  background-image: url('./assets/5b91f14d-84ce-4630-93d3-68b39788c576.png');
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter: brightness(1.12) saturate(0.7) hue-rotate(4deg);
 }
 
-.dashboard-header h1 {
-  margin: 0.5vh 0;
-  font-size: clamp(26px, 5vh, 44px);
-}
-
-.dashboard-intro {
-  font-size: clamp(12px, 1.8vh, 15px);
-  line-height: 1.4;
+#root > main.dashboard {
+  overflow-y: auto;
 }
 
 .garment-categories {
@@ -305,6 +330,10 @@ nav {
 .garment-card-content h3,
 .garment-card-content p {
   margin: 2px 0;
+}
+
+.garment-card-content .garment-style {
+  margin-bottom: 10px;
 }
 
 /* Catalog-style pages */
@@ -516,6 +545,11 @@ nav {
   background: transparent;
 }
 
+.editor-page--with-preview .dress-preview__canvas--dress,
+.editor-page--with-preview .dress-preview__canvas--corset {
+  filter: grayscale(1) contrast(1.22) brightness(0.97);
+}
+
 .editor-page--with-preview .editor-layout {
   grid-column: 1;
   grid-row: 2;
@@ -668,14 +702,15 @@ nav {
 .catalog-page .garment-card {
   overflow: visible;
   border: 0;
-  border-radius: 0;
-  background: transparent;
+  border-radius: 8px;
+  background: rgba(250, 240, 222, 0.62);
   box-shadow: none;
 }
 
 .catalog-page .garment-card-content {
-  border: 1px solid #d8c8b1;
-  border-radius: 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 @media (max-width: 760px) {
