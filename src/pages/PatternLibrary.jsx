@@ -1,111 +1,177 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getGarments } from '../services/api'
+
+import modernDress from '../assets/icons/c1154689-812b-4dc0-bfb9-1ebc83f81e49.png'
+import classicDress from '../assets/icons/77501021-30fe-4e11-9440-5280061ef369.png'
+import classicCorset from '../assets/icons/3e3c09a4-cf23-433c-9bff-90f035d33442.png'
+import modernCorset from '../assets/icons/8de6f20f-fde9-420e-8b99-41c32aca6aab.png'
+import classicSkirt from '../assets/icons/d7842ebe-4288-4ddc-8f4b-bdedea52c77e.png'
+import modernSkirt from '../assets/icons/268e3841-2374-4b35-a3f8-5656ddfb7484.png'
+
+const categories = [
+  {
+    name: 'Dresses',
+    category: 'Dress',
+    
+  },
+  {
+    name: 'Corsets',
+    category: 'Corset',
+    
+  },
+  {
+    name: 'Skirts',
+    category: 'Skirt',
+    
+  },
+]
+
+const garmentImages = {
+  '1': classicDress,
+  '2': modernDress,
+  '6': classicCorset,
+  '7': modernCorset,
+  '21': classicSkirt,
+  '25': modernSkirt,
+}
 
 function PatternLibrary() {
   const [garments, setGarments] = useState([])
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('All')
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    let active = true
-
-    getGarments()
-      .then((data) => {
-        if (active) setGarments(data)
-      })
-      .catch((requestError) => {
-        if (active) setError(requestError.message)
-      })
-      .finally(() => {
-        if (active) setLoading(false)
-      })
-
-    return () => {
-      active = false
+    async function fetchGarments() {
+      try {
+        setGarments(await getGarments())
+      } catch (requestError) {
+        console.error(requestError)
+        setError('Unable to load the garment collection.')
+      } finally {
+        setLoading(false)
+      }
     }
+
+    fetchGarments()
   }, [])
 
-  const categories = useMemo(
-    () => ['All', ...new Set(garments.map((garment) => garment.category))],
-    [garments]
-  )
-
-  const filteredGarments = useMemo(() => {
-    const normalizedSearch = search.trim().toLowerCase()
-
-    return garments.filter((garment) => {
-      const matchesCategory = category === 'All' || garment.category === category
-      const matchesSearch =
-        !normalizedSearch ||
-        `${garment.name} ${garment.category} ${garment.silhouette}`
-          .toLowerCase()
-          .includes(normalizedSearch)
-
-      return matchesCategory && matchesSearch
-    })
-  }, [category, garments, search])
+  const apiUrl = (
+    import.meta.env.VITE_API_URL || 'http://localhost:3001'
+  ).replace(/\/+$/, '')
+  const normalizedSearch = search.trim().toLowerCase()
 
   return (
     <main className="catalog-page">
-      <header className="page-heading">
-        <p className="section-kicker">The pattern archive</p>
-        <h1>Pattern Library</h1>
-        <p>Find a silhouette to make your own.</p>
-      </header>
+      <div className="catalog-toolbar">
+        <header className="page-heading">
+          <p className="section-kicker">The pattern archive</p>
+          <h1>Library</h1>
+          <p></p>
+        </header>
 
-      <section className="catalog-controls" aria-label="Filter patterns">
-        <label className="catalog-search">
-          <span>Search patterns</span>
-          <input
-            type="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Try “corset” or “dress”"
-          />
-        </label>
+        <section className="catalog-controls" aria-label="Filter patterns">
+          <label className="catalog-search">
+            <span>Search patterns</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Try “corset” or “dress”"
+            />
+          </label>
 
-        <label className="catalog-category">
-          <span>Category</span>
-          <select value={category} onChange={(event) => setCategory(event.target.value)}>
-            {categories.map((item) => <option key={item}>{item}</option>)}
-          </select>
-        </label>
-      </section>
+          <label className="catalog-category">
+            <span>Category</span>
+            <select
+              value={category}
+              onChange={(event) => setCategory(event.target.value)}
+            >
+              <option>All</option>
+              {categories.map((item) => (
+                <option key={item.category}>{item.category}</option>
+              ))}
+            </select>
+          </label>
+        </section>
+      </div>
 
-      {loading && <p className="page-message" role="status">Loading patterns…</p>}
-      {error && <p className="page-message error-message" role="alert">Could not load patterns: {error}</p>}
+      {loading && <p className="page-message" role="status">Loading collection...</p>}
+      {error && <p className="page-message error-message" role="alert">{error}</p>}
 
       {!loading && !error && (
-        <>
-          <p className="result-count">
-            {filteredGarments.length} {filteredGarments.length === 1 ? 'pattern' : 'patterns'}
-          </p>
-          {filteredGarments.length ? (
-            <section className="garment-grid" aria-label="Available patterns">
-              {filteredGarments.map((garment) => (
-                <article className="garment-card" key={garment.id}>
-                  <div className="garment-card-art" aria-hidden="true">
-                    <span>{garment.category}</span>
-                    <strong>{garment.name.split(' ').map((word) => word[0]).join('')}</strong>
+        <div className="garment-categories">
+          {categories
+            .filter((item) => category === 'All' || category === item.category)
+            .map((item) => {
+              const categoryGarments = garments.filter((garment) => {
+                const searchableText =
+                  `${garment.name} ${garment.style} ${garment.description} ${garment.silhouette}`
+                    .toLowerCase()
+
+                return (
+                  garment.category === item.category &&
+                  searchableText.includes(normalizedSearch)
+                )
+              })
+
+              return (
+                <section
+                  className={`garment-category garment-category--${item.category.toLowerCase()}`}
+                  key={item.category}
+                >
+                  <div className="category-heading">
+                    <div>
+                      <p className="eyebrow">The Collection</p>
+                      <h2>{item.name}</h2>
+                      <p>{item.description}</p>
+                    </div>
                   </div>
-                  <div className="garment-card-copy">
-                    <p className="section-kicker">{garment.category} <i>·</i> {garment.silhouette}</p>
-                    <h2>{garment.name}</h2>
-                    <p>{garment.description}</p>
-                    <Link className="text-link" to={`/editor/${garment.id}`}>
-                      Customize pattern <span aria-hidden="true">→</span>
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </section>
-          ) : (
-            <p className="empty-state">No patterns match those filters. Try another search.</p>
-          )}
-        </>
+
+                  {categoryGarments.length ? (
+                    <div className="garment-grid">
+                      {categoryGarments.map((garment) => (
+                        <article className="garment-card" key={garment.id}>
+                          <Link
+                            to={`/editor/${garment.id}`}
+                            className="garment-image-link"
+                          >
+                            <div className="garment-card-image">
+                              <img
+                                className={`garment-image--${garment.id}`}
+                                src={
+                                  garmentImages[String(garment.id)] ||
+                                  `${apiUrl}${garment.image}`
+                                }
+                                alt={garment.name}
+                              />
+                            </div>
+                          </Link>
+
+                          <div className="garment-card-content">
+                            <p className="garment-style">{garment.style}</p>
+                            <h3>{garment.name}</h3>
+                            <p>{garment.description}</p>
+                            <Link to={`/editor/${garment.id}`}>
+                              Customize garment →
+                            </Link>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>
+                      {normalizedSearch
+                        ? 'No garments match your search in this collection.'
+                        : 'No garments available in this category.'}
+                    </p>
+                  )}
+                </section>
+              )
+            })}
+        </div>
       )}
     </main>
   )

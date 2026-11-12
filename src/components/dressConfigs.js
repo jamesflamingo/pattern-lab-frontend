@@ -1,5 +1,7 @@
-import classicDress from '../images/45e9085b-bcaf-4f3a-ae4c-8c28deba562a.png'
-import modernDress from '../images/9401d9ef-082f-464b-b45a-49f69ecabff6.png'
+import modernDress from '../assets/dresses/modern-wrap/modern-dress-base-cutout.png'
+import modernHighNeck from '../assets/dresses/modern-wrap/neckline-modern/neckline.png'
+import modernStrapsOne from '../assets/dresses/modern-wrap/straps/straps1.png'
+import modernStrapsTwo from '../assets/dresses/modern-wrap/straps/straps2.png'
 
 import bishopLeft from '../assets/dresses/classic-wrap/sleeves/bishop-left.png'
 import bishopRight from '../assets/dresses/classic-wrap/sleeves/bishop-right.png'
@@ -12,19 +14,108 @@ import wrapVNeckline from '../assets/dresses/classic-wrap/necklines/wrap-v.png'
 import belt from '../assets/dresses/classic-wrap/overlays/belt.png'
 import cascadeHem from '../assets/dresses/classic-wrap/hems/cascade.png'
 import tulipHem from '../assets/dresses/classic-wrap/hems/wrap-tulip.png'
+import classicCorsetSweetheart from '../assets/f0f37434-cd35-4f97-bb1f-2825b3e2734a.png'
+import classicCorsetScoop from '../assets/86a5a2b7-f3a7-4001-b8f4-c105d0cc79cc.png'
+import classicCorsetStraight from '../assets/c1d2e6b0-2426-45f1-bc35-5ee90a9426f4.png'
+import modernCorsetBowStraps from '../assets/descarga.png'
+import modernCorsetBuckleStraps from '../assets/descarga (1).png'
+import modernCorsetShoulderTieStraps from '../assets/ef9fb40a-e7c2-407a-8f05-4b035f69ec39.png'
+import modernCorsetRuffleStraps from '../assets/descarga (3).png'
 
 // Todas las coordenadas están en píxeles del vestido base (width x height).
 //
 // Cada capa sustituye una zona del vestido:
 // - `componentId`: componente del editor cuya opción elegida decide la pieza.
-// - `hide`: polígono del vestido base que se oculta cuando hay pieza elegida.
+// - `hide`: polígono del vestido base que se oculta; puede variar por pieza.
 // - `pieces[opción]`: imagen y rectángulo (x, y, width, height) donde se coloca.
+//   `bottomEdge` (opcional) define el borde inferior en coordenadas originales.
 //   `clip` (opcional) polígono fuera del cual no se dibujan las piezas de la capa.
 // - `overlay` (opcional): imagen que se dibuja encima de la pieza elegida.
 export const dressConfigs = {
+  7: {
+    name: 'Modern Corset',
+    base: null,
+    layerFilter: 'modern-bodice-tone',
+    width: 1155,
+    height: 1412,
+    layers: [
+      {
+        slot: 'modern-corset-straps',
+        componentId: '73',
+        alt: 'Modern corset strap variation',
+        pieces: {
+          'Bow-tie Straps': {
+            src: modernCorsetBowStraps,
+            x: 87.4,
+            y: 83.4,
+            width: 978.3,
+            height: 1245.2,
+          },
+          'Buckle Straps': {
+            src: modernCorsetBuckleStraps,
+            x: 84.1,
+            y: 83.6,
+            width: 985,
+            height: 1244.8,
+          },
+          'Shoulder-tie Straps': {
+            src: modernCorsetShoulderTieStraps,
+            x: 62.59156,
+            y: 78.34871,
+            width: 1028.9035,
+            height: 1251.86575,
+          },
+          'Ruffle Straps': {
+            src: modernCorsetRuffleStraps,
+            x: 55,
+            y: 80,
+            width: 1045,
+            height: 1252,
+          },
+        },
+      },
+    ],
+  },
+  6: {
+    name: 'Classic Corset',
+    base: null,
+    layerFilter: 'modern-bodice-tone',
+    width: 1155,
+    height: 1412,
+    layers: [
+      {
+        slot: 'corset-neckline',
+        componentId: '52',
+        alt: 'Classic corset neckline variation',
+        pieces: {
+          Sweetheart: {
+            src: classicCorsetSweetheart,
+            x: 55,
+            y: 80,
+            width: 1045,
+            height: 1252,
+          },
+          Scoop: {
+            src: classicCorsetScoop,
+            x: 75.5,
+            y: 55,
+            width: 1004,
+            height: 1302,
+          },
+          Straight: {
+            src: classicCorsetStraight,
+            x: 55,
+            y: 80,
+            width: 1045,
+            height: 1252,
+          },
+        },
+      },
+    ],
+  },
   1: {
     name: 'Classic Dress',
-    base: classicDress,
+    base: null,
     width: 1024,
     height: 1536,
     layers: [
@@ -62,17 +153,8 @@ export const dressConfigs = {
         slot: 'hem',
         componentId: '40',
         alt: 'Hem variation',
-        // La falda se sustituye entera desde justo debajo del cinturón; a la derecha
-        // del torso también se oculta el lazo original, que se redibuja en `drawings`.
-        hide: [
-          '0,535 652,535 652,470 1024,470 1024,1536 0,1536',
-          // Extremo izquierdo del cinturón original: lo sustituye `overlay`.
-          '340,478 373,478 373,536 340,536',
-        ],
-        // Zona donde se dibuja la falda: empieza en el borde inferior del cinturón y, a la derecha
-        // del nudo, solo desde debajo de las lazadas.
-        clip: '0,531 396,531 396,506 656,506 656,570 1024,570 1024,1536 0,1536',
-        overlay: { src: belt, x: 372, y: 481, width: 250, height: 59 },
+        // El cinturón tapa la unión entre el cuerpo y la falda.
+        overlay: { src: belt, x: 372, y: 451, width: 273, height: 59 },
         // Lazo dibujado en vectores con el mismo trazo y tono que la ilustración.
         drawings: [
           {
@@ -97,8 +179,22 @@ export const dressConfigs = {
           },
         ],
         pieces: {
-          Ruffled: { src: cascadeHem, x: 91.8, y: 474.7, width: 820.8, height: 1034.6 },
-          Asymmetric: { src: tulipHem, x: 181.8, y: 474, width: 649, height: 1050 },
+          Ruffled: {
+            src: cascadeHem,
+            x: 91.8,
+            y: 444.7,
+            width: 820.8,
+            height: 1034.6,
+            topFade: { inset: 20, height: 30 },
+          },
+          Asymmetric: {
+            src: tulipHem,
+            x: 198,
+            y: 444,
+            width: 616.6,
+            height: 997.5,
+            topFade: { inset: 20, height: 30 },
+          },
         },
       },
     ],
@@ -107,9 +203,49 @@ export const dressConfigs = {
   2: {
     name: 'Modern Dress',
     base: modernDress,
+    baseFilter: 'modern-base-tone',
+    layerFilter: 'modern-bodice-tone',
     width: 1024,
     height: 1536,
-    layers: [],
+    layers: [
+      {
+        slot: 'bodice',
+        componentId: '8',
+        alt: 'Bodice variation',
+        pieces: {
+          'High Neck': {
+            src: modernHighNeck,
+            x: 301.5,
+            y: 20,
+            width: 421,
+            height: 371,
+            sourceWidth: 451,
+            sourceHeight: 401,
+            bottomEdge: 'M 64 379 C 135 375 310 375 382 379',
+          },
+          'Sweetheart Straps': {
+            src: modernStrapsOne,
+            x: 275,
+            y: 77,
+            width: 474,
+            height: 299,
+            sourceWidth: 424,
+            sourceHeight: 329,
+            bottomEdge: 'M 62 284 C 77 299 96 303 130 304 C 183 304 244 303 290 304 C 320 305 340 306 360 296',
+          },
+          'Off-Shoulder': {
+            src: modernStrapsTwo,
+            x: 182,
+            y: 273,
+            width: 660,
+            height: 253,
+            sourceWidth: 560,
+            sourceHeight: 253,
+            bottomEdge: 'M 172 233 C 225 233 335 233 386 233',
+          },
+        },
+      },
+    ],
   },
 }
 

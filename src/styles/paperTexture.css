@@ -7,7 +7,7 @@
   --paper-light: #EBD9BE;
   --paper-beige: #D8C1A1;
   --paper-brown: #927454;
-  --paper-text: #594735;
+  --paper-text: var(--atelier-ink);
   --paper-border: #CBB697;
 }
 

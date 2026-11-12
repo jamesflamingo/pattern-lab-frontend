@@ -83,6 +83,15 @@
   transform-origin: center center;
 }
 
+.garment-card-image img.garment-image--6,
+.garment-card-image img.garment-image--7 {
+  --img-size: 1.12;
+}
+
+.garment-card-image img.garment-image--25 {
+  --img-size: 0.9;
+}
+
 .garment-card-content {
   padding: 20px;
   background-color: #f7efe3;
@@ -152,7 +161,7 @@
 
 .dress-preview h2 {
   color: #604a39;
-  font-family: Georgia, serif;
+  font-family: var(--atelier-font);
   font-weight: 400;
   margin-bottom: 20px;
 }
@@ -328,6 +337,25 @@ nav {
   margin: 1vh 0;
 }
 
+.catalog-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 1.5vh;
+}
+
+.catalog-toolbar .page-heading {
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+.catalog-toolbar .catalog-controls {
+  flex: 0 1 560px;
+  width: min(100%, 560px);
+  margin: 0 0 4px;
+}
+
 .catalog-page .garment-grid {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   grid-auto-rows: auto;
@@ -397,7 +425,10 @@ nav {
 
 .editor-page {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 613px);
   grid-template-rows: auto minmax(0, 1fr);
   column-gap: 28px;
   align-items: stretch;
@@ -414,15 +445,14 @@ nav {
 
 .editor-page .dress-preview {
   min-height: 0;
-  padding: 12px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
-
-.editor-page .dress-preview h2 {
-  margin: 0 0 8px;
-  font-size: 16px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .editor-page .dress-preview__canvas {
@@ -432,25 +462,95 @@ nav {
   max-width: 100%;
   height: 100%;
   aspect-ratio: auto;
+  box-sizing: border-box;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .editor-page .editor-layout {
   grid-column: 2;
   grid-row: 2;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 12px;
+  width: min(100%, 613px);
+  justify-self: center;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(0, 1.3fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  min-height: clamp(820px, 95vh, 960px);
+  padding: 16% 12% 10%;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+}
+
+.editor-page--with-preview {
+  grid-template-columns: minmax(0, 613px) minmax(0, 1fr);
+}
+
+.editor-page--with-preview .dress-preview {
+  grid-column: 2;
+  grid-row: 2;
+  position: relative;
+  min-width: 0;
+}
+
+.editor-page--with-preview .dress-preview::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: calc(118% + 150px);
+  height: calc(112% + 150px);
+  transform: translate(-50%, -50%);
+  background: url('./assets/541e8229-268d-4a4b-add5-3a26dd859899.png')
+    center / contain no-repeat;
+}
+
+.editor-page--with-preview .dress-preview__canvas {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.editor-page--with-preview .editor-layout {
+  grid-column: 1;
+  grid-row: 2;
 }
 
 .editor-page .editor-layout:only-child,
 .editor-page > .editor-layout:nth-child(2) {
   grid-column: 1 / -1;
-  grid-template-columns: minmax(230px, 0.8fr) minmax(300px, 1.5fr);
+  width: min(100%, 613px);
+  justify-self: center;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
   grid-template-rows: none;
 }
 
-.editor-page .component-selector {
-  padding: 10px;
+.editor-page .editor-layout .component-selector,
+.editor-page .editor-layout .editor-form {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.editor-page .editor-layout .component-selector {
+  padding: 14px 12px;
+}
+
+.editor-page .editor-layout .editor-form {
+  gap: 16px;
+  padding: 16px 12px;
+}
+
+.editor-page .editor-form input,
+.editor-page .editor-form select {
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .editor-page .component-list {
@@ -473,7 +573,37 @@ nav {
   .editor-page .editor-layout {
     grid-column: 1;
     grid-row: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    min-height: 800px;
+    padding: 30% 12% 10%;
   }
+
+  .editor-page--with-preview .dress-preview {
+    grid-column: 1;
+    grid-row: 2;
+    height: 52vh;
+    min-height: 340px;
+    max-height: 520px;
+  }
+
+  .editor-page--with-preview .dress-preview__canvas {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+  }
+
+  .editor-page--with-preview .editor-layout {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .editor-page .editor-layout:only-child,
+  .editor-page > .editor-layout:nth-child(2) {
+    grid-column: 1;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
 }
 
 .editor-page {
@@ -498,4 +628,56 @@ nav {
 
 .editor-page .form-actions {
   padding-bottom: 20px;
+}
+
+.catalog-page .garment-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.catalog-page .garment-card {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.catalog-page .garment-card-content {
+  border: 1px solid #d8c8b1;
+  border-radius: 8px;
+}
+
+@media (max-width: 760px) {
+  .catalog-page {
+    overflow-y: auto;
+  }
+
+  .catalog-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .catalog-toolbar .catalog-controls {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .catalog-page .garment-categories {
+    flex: 0 0 auto;
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-page .garment-category {
+    min-height: 420px;
+  }
+
+  .catalog-page .garment-grid {
+    grid-template-columns: 1fr;
+  }
 }

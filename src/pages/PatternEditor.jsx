@@ -29,7 +29,10 @@ function PatternEditor() {
   const [error, setError] = useState(null)
 
   const isClassicDress = String(id) === '1'
-  const hasDressPreview = String(id) in dressConfigs
+  const isModernDress = String(id) === '2'
+  const isClassicCorset = String(id) === '6'
+  const isModernCorset = String(id) === '7'
+  const hasGarmentPreview = String(id) in dressConfigs
 
   useEffect(() => {
     let active = true
@@ -51,44 +54,96 @@ function PatternEditor() {
 
         if (!active) return
 
-        const visibleComponents = (isClassicDress
+        const editorComponents = (isClassicDress
           ? componentData.filter((component) =>
               ['2', '3', '7', '40'].includes(String(component.id))
             )
+          : isClassicCorset
+            ? componentData.filter(
+                (component) => component.type === 'neckline'
+              )
+          : isModernCorset
+            ? componentData.filter((component) => component.type === 'straps')
+          : isModernDress
+            ? componentData.filter((component) =>
+                ['8', '9'].includes(String(component.id))
+              )
           : componentData
         ).map((component) => {
-          const available = getAvailableOptions(id, component.id)
-          if (!available) return component
-          const options = component.options.filter((option) =>
-            available.includes(option)
-          )
-          return {
-            ...component,
-            options,
-            defaultOption: options.includes(component.defaultOption)
-              ? component.defaultOption
-              : options[0],
+          const modernOptions = {
+            8: ['Sweetheart Straps'],
+            9: ['High Neck'],
           }
+          const modernCorsetOptions = {
+            73: [
+              'Bow-tie Straps',
+              'Buckle Straps',
+              'Shoulder-tie Straps',
+              'Ruffle Straps',
+            ],
+          }
+          const available = isModernDress
+            ? modernOptions[component.id]
+            : isModernCorset
+              ? modernCorsetOptions[component.id]
+            : getAvailableOptions(id, component.id)
+          const configuredComponent = available
+            ? {
+                ...component,
+                options: available,
+                defaultOption: available.includes(component.defaultOption)
+                  ? component.defaultOption
+                  : available[0],
+              }
+            : component
+
+          return isModernDress && String(component.id) === '8'
+            ? { ...configuredComponent, name: 'Strap' }
+            : configuredComponent
         })
+
+        const visibleComponents = isModernDress
+          ? [
+              {
+                ...editorComponents.find((component) => String(component.id) === '8'),
+                name: 'Strap',
+              },
+              ...editorComponents.filter((component) => String(component.id) === '9'),
+              {
+                id: 'arms',
+                name: 'Arms',
+                options: ['Off-Shoulder'],
+                defaultOption: 'Off-Shoulder',
+                defaultSize: editorComponents[0]?.defaultSize ?? 38,
+              },
+            ]
+          : editorComponents
 
         const initialOptions = {}
         const initialSizes = {}
 
-        visibleComponents.forEach((component) => {
-          const savedOption = designData?.options?.[component.id]
-          initialOptions[component.id] = component.options.includes(savedOption)
-            ? savedOption
-            : component.defaultOption
+        visibleComponents
+          .flatMap((component) => component.components ?? [component])
+          .forEach((component) => {
+            const savedOption = designData?.options?.[component.id]
+            const hasSavedOption = component.options.includes(savedOption)
+            if (!isModernDress || designData || hasSavedOption) {
+              initialOptions[component.id] = hasSavedOption
+                ? savedOption
+                : component.defaultOption
+            }
 
-          initialSizes[component.id] =
-            designData?.sizes?.[component.id] ?? component.defaultSize
-        })
+            initialSizes[component.id] =
+              designData?.sizes?.[component.id] ?? component.defaultSize
+          })
 
         setGarment(garmentData)
         setComponents(visibleComponents)
         setSelectedOptions(initialOptions)
         setSelectedSizes(initialSizes)
-        setSelectedComponentId(visibleComponents[0]?.id ?? null)
+        setSelectedComponentId(
+          visibleComponents[0]?.id ?? null
+        )
         setDesignName(
           designData?.name ?? `${garmentData.name} — my design`
         )
@@ -104,7 +159,14 @@ function PatternEditor() {
     return () => {
       active = false
     }
-  }, [designId, id, isClassicDress])
+  }, [
+    designId,
+    id,
+    isClassicDress,
+    isClassicCorset,
+    isModernCorset,
+    isModernDress,
+  ])
 
   function handleOptionChange(componentId, newOption) {
     setSelectedOptions((previousOptions) => ({
@@ -117,6 +179,22 @@ function PatternEditor() {
     setSelectedSizes((previousSizes) => ({
       ...previousSizes,
       [componentId]: Number(newSize),
+    }))
+  }
+
+  function handleComponentSelect(componentId) {
+    setSelectedComponentId(componentId)
+
+    if (!isModernDress) return
+
+    const component = components.find(
+      (item) => String(item.id) === String(componentId)
+    )
+    if (!component?.options?.length) return
+
+    setSelectedOptions((previousOptions) => ({
+      ...previousOptions,
+      [component.id]: component.defaultOption ?? component.options[0],
     }))
   }
 
@@ -186,7 +264,9 @@ function PatternEditor() {
   }
 
   return (
-    <main className="catalog-page editor-page">
+    <main
+      className={`catalog-page editor-page${hasGarmentPreview ? ' editor-page--with-preview' : ''}`}
+    >
       <header className="page-heading">
         <p className="section-kicker">
           {garment.category} <i>·</i> Pattern editor
@@ -196,15 +276,19 @@ function PatternEditor() {
         <p>{garment.description}</p>
       </header>
 
-      {hasDressPreview && (
-        <DressPreview garmentId={String(id)} selectedOptions={selectedOptions} />
+      {hasGarmentPreview && (
+        <DressPreview
+          garmentId={String(id)}
+          selectedOptions={selectedOptions}
+          selectedComponentId={selectedComponentId}
+        />
       )}
 
       <div className="editor-layout">
         <ComponentSelector
           components={components}
           selectedComponentId={selectedComponentId}
-          onSelectComponent={setSelectedComponentId}
+          onSelectComponent={handleComponentSelect}
         />
 
         <form className="editor-form" onSubmit={handleSave}>
@@ -224,50 +308,65 @@ function PatternEditor() {
 
               <h2>{selectedComponent.name}</h2>
 
-              <label className="select-label" htmlFor="component-option">
-                Style
-              </label>
+              {(selectedComponent.components ?? [selectedComponent]).map(
+                (component) => (
+                  <div className="component-editor__fields" key={component.id}>
+                    {selectedComponent.components && (
+                      <h3>{component.name}</h3>
+                    )}
 
-              <select
-                id="component-option"
-                value={selectedOptions[selectedComponent.id] ?? ''}
-                onChange={(event) =>
-                  handleOptionChange(
-                    selectedComponent.id,
-                    event.target.value
-                  )
-                }
-              >
-                {selectedComponent.options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                    <label
+                      className="select-label"
+                      htmlFor={`component-option-${component.id}`}
+                    >
+                      Style
+                    </label>
 
-              <label className="select-label size-label" htmlFor="component-size">
-                Size
-              </label>
+                    <select
+                      id={`component-option-${component.id}`}
+                      value={
+                        selectedOptions[component.id] ??
+                        component.defaultOption ??
+                        component.options[0] ??
+                        ''
+                      }
+                      onChange={(event) =>
+                        handleOptionChange(component.id, event.target.value)
+                      }
+                    >
+                      {component.options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
 
-              <input
-                id="component-size"
-                type="number"
-                required
-                min="30"
-                max="60"
-                step="2"
-                value={
-                  selectedSizes[selectedComponent.id] ??
-                  selectedComponent.defaultSize ??
-                  38
-                }
-                onChange={(event) =>
-                  handleSizeChange(
-                    selectedComponent.id,
-                    event.target.value
-                  )
-                }
-              />
+                    <label
+                      className="select-label size-label"
+                      htmlFor={`component-size-${component.id}`}
+                    >
+                      Size
+                    </label>
+
+                    <input
+                      id={`component-size-${component.id}`}
+                      type="number"
+                      required
+                      min="30"
+                      max="60"
+                      step="2"
+                      value={
+                        selectedSizes[component.id] ??
+                        component.defaultSize ??
+                        38
+                      }
+                      onChange={(event) =>
+                        handleSizeChange(component.id, event.target.value)
+                      }
+                    />
+                  </div>
+                )
+              )}
 
               <p className="field-note">
                 Available sizes:{' '}
@@ -276,7 +375,9 @@ function PatternEditor() {
             </section>
           ) : (
             <p className="empty-state">
-              No components are configured for this pattern yet.
+              {components.length
+                ? 'Select a garment component to add it to the preview.'
+                : 'No components are configured for this pattern yet.'}
             </p>
           )}
 

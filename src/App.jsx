@@ -7,6 +7,7 @@ import PatternLibrary from './pages/PatternLibrary'
 import PatternEditor from './pages/PatternEditor'
 import Measurements from './pages/Measurements'
 import MyCollection from './pages/MyCollection'
+import Atelier from './pages/Atelier'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/library" element={<PatternLibrary />} />
         <Route path="/editor/:id" element={<PatternEditor />} />
+        <Route path="/atelier" element={<Atelier />} />
         <Route path="/measurements" element={<Measurements />} />
         <Route path="/collection" element={<MyCollection />} />
       </Routes>
